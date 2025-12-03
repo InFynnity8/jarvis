@@ -1,10 +1,15 @@
 # tts_helper.py
 import sys
-import wave
+
+from pathlib import Path
 from TTS.api import TTS
 
-# Load model once
-tts = TTS(model_name="models/en-us", progress_bar=False, gpu=False)
+output_path = Path("src/models/output.wav")
+
+# Ensure parent directory exists
+output_path.parent.mkdir(parents=True, exist_ok=True)
+
+tts = TTS(model_name="tts_models/en/ljspeech/tacotron2-DDC", progress_bar=False)
 
 def text_to_wav(text, out_path):
     tts.tts_to_file(text=text, file_path=out_path)

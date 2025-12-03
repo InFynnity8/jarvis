@@ -185,6 +185,9 @@ function App() {
       <h2>Assistant:</h2>
       <p>{llmResponse}</p>
       <button onClick={() => speak("Hello Fynn, how may I assist you today?")}>
+        Test
+      </button>
+      <button onClick={() => startMicStream()}>
         Speak
       </button>
 

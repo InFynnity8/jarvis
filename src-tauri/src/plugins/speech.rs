@@ -1,6 +1,7 @@
 use anyhow::Result;
 use once_cell::sync::Lazy;
 use rodio::{Decoder, OutputStreamBuilder, Sink};
+use std::fs;
 use std::fs::File;
 use std::io::BufReader;
 use std::path::Path;
@@ -53,24 +54,27 @@ pub async fn transcribe_audio(chunk: Vec<u8>, app_handle: tauri::AppHandle) -> R
 }
 
 #[command]
-pub fn play_tts(text: String) ->  Result<(), String> {
+pub fn play_tts(text: String) -> Result<(), String> {
     // 1️⃣ Output path for TTS WAV
-    let output_path = Path::new("src-tauri/src/models/output.wav");
-
+    let output_path = Path::new("src/models/output.wav");
+    if let Some(parent) = output_path.parent() {
+        fs::create_dir_all(parent).map_err(|e| format!("Failed to create folder: {:?}", e))?;
+    }
     // 2️⃣ Call Python TTS script
     let status = Command::new("python")
         .arg("C:/Users/USER/Desktop/jarvis/src-tauri/src/tts.py")
         .arg(text)
         .arg(output_path)
-        .status().map_err(|e| format!("failed: {:?}", e))?;
+        .status()
+        .map_err(|e| format!("failed: {:?}", e))?;
 
     if !status.success() {
         return Err("Python TTS failed".to_string());
     }
 
     // 3️⃣ Play WAV using rodio
-    let stream_handle = OutputStreamBuilder::open_default_stream()
-        .expect("Failed to open default audio stream");
+    let stream_handle =
+        OutputStreamBuilder::open_default_stream().expect("Failed to open default audio stream");
 
     let sink = Sink::connect_new(&stream_handle.mixer());
 
