@@ -26,6 +26,12 @@ export async function transcribeAudio(): Promise<string> {
   return await invoke("transcribe_audio");
 }
 
+export async function speak(text: string) {
+  console.log("play tts");
+  
+  await invoke("play_tts", { text });
+}
+
 // --- LLM Plugin ---
 export async function generateResponse(prompt: string): Promise<string> {
   return await invoke("generate_response", { prompt });

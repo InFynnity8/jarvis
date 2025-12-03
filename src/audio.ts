@@ -12,7 +12,7 @@ export function startMicStream() {
     mediaRecorder.ondataavailable = (event) => {
   if (event.data && event.data.size > 0) {
     event.data.arrayBuffer().then((buffer) => {
-      invoke("mic_chunk", { chunk: Array.from(new Uint8Array(buffer)) });
+      invoke("transcribe_audio", { chunk: Array.from(new Uint8Array(buffer)) });
     });
   }
 };

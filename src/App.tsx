@@ -1,15 +1,16 @@
 // import React, { useEffect, useState } from "react";
 // import { listen } from "@tauri-apps/api/event";
-// import {
-//   greet,
-//   screenReadText,
-//   getActiveWindowTitle,
-//   simulateKeyboardInput,
-//   simulateMouseClick,
-//   transcribeAudio,
-//   generateResponse,
-//   getSystemInfo,
-// } from "./api";
+import {
+  greet,
+  screenReadText,
+  getActiveWindowTitle,
+  simulateKeyboardInput,
+  simulateMouseClick,
+  transcribeAudio,
+  generateResponse,
+  getSystemInfo,
+  speak
+} from "./api";
 
 // function App() {
 //   const [log, setLog] = useState<string[]>([]);
@@ -158,8 +159,9 @@ function App() {
   const [transcript, setTranscript] = useState("");
   const [llmResponse, setLlmResponse] = useState("");
 
+
   useEffect(() => {
-    startMicStream();
+    // startMicStream();
 
     const unlistenTranscript = listen("transcript", (event) => {
       setTranscript((prev) => prev + " " + event.payload);
@@ -182,7 +184,11 @@ function App() {
       <p>{transcript}</p>
       <h2>Assistant:</h2>
       <p>{llmResponse}</p>
-    </div>
+      <button onClick={() => speak("Hello Fynn, how may I assist you today?")}>
+        Speak
+      </button>
+
+    </div >
   );
 }
 

@@ -5,10 +5,11 @@ use plugins::{
     llm::*,
     system::*,
     speech::*,
-    
     automation::*,
     screen_reader::*
 };
+
+
 
 
 #[tauri::command]
@@ -28,6 +29,7 @@ pub fn run() {
             simulate_keyboard_input,
             simulate_mouse_click,
             transcribe_audio,
+            play_tts,  
             generate_response,
             get_system_info
             ])

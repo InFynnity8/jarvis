@@ -1,0 +1,5 @@
+{
+  "speechbrain_interface": "Tacotron2",
+  "vocoder_interface": "HiFIGAN",
+  "vocoder_model_id": "speechbrain/tts-hifigan-ljspeech"
+}
