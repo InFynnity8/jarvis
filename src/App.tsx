@@ -9,6 +9,7 @@ import {
   transcribeAudio,
   generateResponse,
   getSystemInfo,
+  initializeModel,
   speak
 } from "./api";
 
@@ -152,7 +153,7 @@ import {
 
 // src/App.tsx
 import { useEffect, useState } from "react";
-import { startMicStream } from "./audio";
+import { startStream, stopStream } from "./audio";
 import { listen } from "@tauri-apps/api/event";
 
 function App() {
@@ -162,7 +163,6 @@ function App() {
 
   useEffect(() => {
     // startMicStream();
-
     const unlistenTranscript = listen("transcript", (event) => {
       setTranscript((prev) => prev + " " + event.payload);
     });
@@ -187,9 +187,21 @@ function App() {
       <button onClick={() => speak("Hello Fynn, how may I assist you today?")}>
         Test
       </button>
-      <button onClick={() => startMicStream()}>
-        Speak
+          <div className="p-4 space-y-4">
+      <button
+        className="px-4 py-2 bg-green-500 text-white rounded"
+        onClick={startStream}
+      >
+        Start Stream
       </button>
+
+      <button
+        className="px-4 py-2 bg-red-500 text-white rounded"
+        onClick={stopStream}
+      >
+        Stop Stream
+      </button>
+    </div>
 
     </div >
   );

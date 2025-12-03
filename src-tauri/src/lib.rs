@@ -1,16 +1,7 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 pub mod plugins;
 
-use plugins::{
-    llm::*,
-    system::*,
-    speech::*,
-    automation::*,
-    screen_reader::*
-};
-
-
-
+use plugins::{automation::*, llm::*, screen_reader::*, speech::*, system::*};
 
 #[tauri::command]
 fn greet(name: &str) -> String {
@@ -28,11 +19,24 @@ pub fn run() {
             get_active_window_title,
             simulate_keyboard_input,
             simulate_mouse_click,
-            transcribe_audio,
-            play_tts,  
+            init_whisper,
+            push_pcm_chunk,
             generate_response,
             get_system_info
-            ])
+        ])
+        .setup(|app| {
+            // initialize whisper model path (adjust path to your model)
+            // You can also call init_whisper from the frontend instead of here.
+            let model_path = "C:/Users/USER/Documents/whisper-models/ggml-small.en.bin";
+            // ignore error: if model missing, frontend can call init_whisper instead
+            let _ = init_whisper(model_path.to_string());
+
+            // start background transcription worker
+            let app_handle = app.handle();
+            start_transcription_worker(app_handle.clone());
+
+            Ok(())
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

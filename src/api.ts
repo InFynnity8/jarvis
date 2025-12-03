@@ -41,3 +41,10 @@ export async function generateResponse(prompt: string): Promise<string> {
 export async function getSystemInfo(): Promise<string> {
   return await invoke("get_system_info");
 }
+
+
+export async function initializeModel(): Promise<string> {
+  return await invoke("init_whisper", {
+    model_path: "C:/Users/USER/Documents/whisper-models/ggml-small.en.bin"
+  });
+}
